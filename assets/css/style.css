@@ -1,8 +1,93 @@
 :root {
-    --primary-color: #3498db;
+    --primary-color: #042941;
     --secondary-color: #2ecc71;
-    --font-family: 'Trebuchet MS', sans-serif;
+    --accent-color: #3498db;
+    --font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, sans-serif;
     --font-size: 16px;
     --background-color: #f4f4f4;
-    --text-color: #333333;
+    --text-color: #ffffff;
+    --dark-text: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    background-color: var(--background-color);
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+/* Header & Navigation */
+.site-header {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.site-header .navbar {
+    padding: 1rem 0;
+    background-color: var(--primary-color);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: var(--text-color) !important;
+    font-weight: 600;
+}
+
+.navbar-brand:hover {
+    color: var(--secondary-color) !important;
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-color) !important;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--secondary-color) !important;
+}
+
+/* Main Content */
+main {
+    min-height: calc(100vh - 200px);
+    padding: 2rem 0;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Footer */
+.site-footer {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 2rem 0;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.75rem 1rem;
+        margin: 0.25rem 0;
+    }
 }
