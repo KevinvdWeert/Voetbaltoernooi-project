@@ -1,18 +1,23 @@
 <?php
-// Start with config
+// Start with config (this sets session ini settings)
 require_once __DIR__ . '/../config/config.php';
 
-// Load authentication
-require_once __DIR__ . '/../auth.php';
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Get database connection function
 require_once __DIR__ . '/../database/connection.php';
 
+// Load authentication functions
+require_once __DIR__ . '/../auth.php';
+
 // Define page configuration
 $pageConfig = [
-    'title' => 'Medical Practice',
-    'description' => 'Professional healthcare services for you and your family',
-    'bodyClass' => 'bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 min-h-screen',
+    'title' => 'Voetbaltoernooi Management',
+    'description' => 'Beheer je voetbaltoernooi eenvoudig met ons management systeem',
+    'bodyClass' => '',
     'showHeader' => true,
     'showFooter' => true,
     'requireAuth' => false

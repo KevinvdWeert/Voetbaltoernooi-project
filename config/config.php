@@ -19,8 +19,10 @@ date_default_timezone_set('Europe/Amsterdam');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Session settings
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 0); // Set to 1 if using HTTPS
+// Session settings - MUST be set before session_start()
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_secure', 0); // Set to 1 if using HTTPS
+}
 ?>
