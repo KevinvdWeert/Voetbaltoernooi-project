@@ -52,6 +52,12 @@ function loginUser($email, $password) {
         $user = $stmt->fetch();
         
         if ($user && password_verify($password, $user['password_hash'])) {
+            // Rehash password if algorithm updated
+            if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
+                $newHash = password_hash($password, PASSWORD_DEFAULT);
+                $upd = $pdo->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+                $upd->execute([$newHash, $user['id']]);
+            }
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];

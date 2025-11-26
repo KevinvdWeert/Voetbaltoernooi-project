@@ -23,6 +23,12 @@ ini_set('display_errors', 1);
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.cookie_httponly', 1);
     ini_set('session.use_only_cookies', 1);
-    ini_set('session.cookie_secure', 0); // Set to 1 if using HTTPS
+    // In production behind HTTPS set cookie_secure=1
+    ini_set('session.cookie_secure', 0); // TODO: switch to 1 when served over HTTPS
+    // SameSite to mitigate CSRF; Lax allows typical navigation; use Strict for higher security
+    ini_set('session.cookie_samesite', 'Lax');
 }
+
+// Derive environment (simple heuristic; customize as needed)
+define('APP_ENV', strpos(APP_URL, 'localhost') !== false ? 'local' : 'production');
 ?>

@@ -1,0 +1,17 @@
+{
+  "name": "Voetbaltoernooi Management",
+  "short_name": "Toernooi",
+  "description": "Beheer je voetbaltoernooi eenvoudig met ons management systeem",
+  "start_url": "/index.php",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {"src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"}
+  ],
+  "categories": ["sports", "productivity"],
+  "lang": "nl",
+  "dir": "ltr"
+}

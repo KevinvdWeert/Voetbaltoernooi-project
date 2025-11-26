@@ -34,4 +34,31 @@ function getPageConfig($key = null) {
     global $pageConfig;
     return $key ? ($pageConfig[$key] ?? null) : $pageConfig;
 }
+
+// Unified JSON response helper
+function jsonResponse($success, $data = null, $error = null, $code = 200) {
+    if (!headers_sent()) {
+        header('Content-Type: application/json');
+        http_response_code($code);
+    }
+    $payload = ['success' => $success];
+    if ($success && $data !== null) { $payload['data'] = $data; }
+    if (!$success) {
+        $payload['error'] = is_array($error) ? $error : ['message' => $error ?: 'Onbekende fout'];
+    }
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+// CSRF utilities
+function getCsrfToken() {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function verifyCsrfToken($token) {
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
 ?>
