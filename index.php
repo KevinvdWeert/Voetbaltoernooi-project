@@ -7,7 +7,7 @@ require_once 'includes/header.php';
   <div id="app" class="mx-auto max-w-7xl px-4 py-6"></div>
   <noscript>
     <div class="mx-auto max-w-2xl px-4 py-12 text-center text-red-600">
-      Deze site heeft JavaScript nodig om te werken.
+      This site requires JavaScript to work.
     </div>
   </noscript>
 </main>

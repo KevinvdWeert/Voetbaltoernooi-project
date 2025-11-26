@@ -1,4 +1,4 @@
-# Voetbaltoernooi Project
+# Football Tournament Project
 
 A lightweight PHP + MySQL backend with a React (UMD) single-page UI styled with Tailwind via CDN. Inspired by Flashscore for quick navigation, live-ish match status, and fast search.
 
@@ -16,7 +16,7 @@ A lightweight PHP + MySQL backend with a React (UMD) single-page UI styled with 
 - `includes/init.php`: Bootstraps DB, sessions, utilities (CSRF + jsonResponse).
 - `includes/header.php`: Mount points for React, exposes `APP_SESSION` and `CSRF_TOKEN`.
 - `database/voetbaltoernooi_base.sql`: Initial schema.
-- `manifest.json`: PWA metadata (nl locale, icons, scope).
+- `manifest.json`: PWA metadata (en locale, icons, scope).
 
 ## Running Locally (Laragon/WAMP)
 1. Place the project under your web root (e.g., Laragon `www`).
@@ -52,7 +52,7 @@ Live match status is derived server-side based on `match_date` window.
 ## Conventions
 - Dark mode: Apply/remove `html.dark` and persist `localStorage.theme`.
 - API fetch: Expect `{success, data}` and handle errors uniformly.
-- Routing: Use hash routes: `#/`, `#/teams`, `#/wedstrijden`, `#/uitslagen`, `#/team/:id`.
+- Routing: Use hash routes: `#/`, `#/teams`, `#/matches`, `#/results`, `#/team/:id`.
 
 ## Next Steps
 - Prune unused legacy CSS selectors under `assets/css/style.css` (ensure not used by any PHP page).

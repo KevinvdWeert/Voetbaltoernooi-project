@@ -24,7 +24,7 @@
 		overlay.innerHTML = `
 			<div class="text-center select-none">
 				<div class="mx-auto h-12 w-12 rounded-full border-4 border-white/20 border-t-white animate-spin"></div>
-				<div id="app-loader-text" class="mt-4 text-white text-sm font-medium">Laden…</div>
+				<div id="app-loader-text" class="mt-4 text-white text-sm font-medium">Loading…</div>
 			</div>
 		`;
 		document.body.appendChild(overlay);
@@ -127,7 +127,7 @@
 	function boot(){
 		injectBaseStyles();
 		// show loader immediately; React will hide on 'app:ready'
-		UI.showLoader('Laden…');
+		UI.showLoader('Loading…');
 
 		// Safety auto-hide in case app never signals ready
 		setTimeout(()=>UI.hideLoader(), 4000);

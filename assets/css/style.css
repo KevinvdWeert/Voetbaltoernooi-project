@@ -87,12 +87,6 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* (Removed Flashscore-like header legacy CSS) */
-
-/* (Removed legacy Top Navigation Bar CSS) */
-
-/* (Removed legacy search bar CSS) */
-
 .search-result-item i {
     margin-right: 0.5rem;
     color: var(--primary-color);
@@ -2037,4 +2031,17 @@ textarea:focus {
         break-inside: avoid;
         page-break-inside: avoid;
     }
+}
+
+/* Dropdown Animation */
+@keyframes dropdownIn {
+    from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Generic dropdown menu animation helper */
+.dropdown-menu {
+    animation: dropdownIn 120ms ease-out;
+    transform-origin: top right;
+    will-change: transform, opacity;
 }
