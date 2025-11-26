@@ -348,6 +348,8 @@ function mount(){
     const session = window.APP_SESSION || {loggedIn:false,user:null};
     const searchRef = useRef(null);
     const debounceRef = useRef(null);
+    const settingsRef = useRef(null);
+    const profileRef = useRef(null);
     const [currentRoute] = useHashRoute();
     const currentPage = currentRoute.replace(/^\/+/, "").split("/")[0] || '';
 
@@ -380,6 +382,26 @@ function mount(){
       return ()=>window.removeEventListener('keydown',onKey);
     },[searchOpen]);
 
+    // Close dropdowns on outside click
+    useEffect(()=>{
+      function onDocDown(e){
+        if (openSettings && settingsRef.current && !settingsRef.current.contains(e.target)){
+          setOpenSettings(false);
+        }
+        if (openDropdown && profileRef.current && !profileRef.current.contains(e.target)){
+          setOpenDropdown(false);
+        }
+      }
+      document.addEventListener('mousedown', onDocDown);
+      return ()=> document.removeEventListener('mousedown', onDocDown);
+    },[openSettings, openDropdown]);
+
+    // Close dropdowns on route change
+    useEffect(()=>{
+      setOpenSettings(false);
+      setOpenDropdown(false);
+    }, [currentRoute]);
+
     function logout(){
       window.APP_SESSION = {loggedIn:false,user:null};
       location.href = './logout.php';
@@ -411,7 +433,7 @@ function mount(){
             <button onClick={()=>setSearchOpen(true)} className="px-3 py-2 rounded-md text-sm bg-slate-800 hover:bg-slate-700 flex items-center gap-1" aria-label="Zoeken openen">
               <i className="fas fa-search" aria-hidden="true"></i><span className="hidden sm:inline">Zoeken</span><span className="text-xs opacity-50 ml-1">/</span>
             </button>
-            <div className="relative">
+            <div className="relative" ref={settingsRef}>
               <button onClick={()=>setOpenSettings(o=>!o)} className="px-3 py-2 rounded-md text-sm bg-slate-800 hover:bg-slate-700 flex items-center gap-2" aria-haspopup="true" aria-expanded={openSettings} aria-label="Instellingen">
                 <i className="fas fa-cog" aria-hidden="true"></i><span className="hidden sm:inline">Instellingen</span><i className="fas fa-chevron-down text-xs" aria-hidden="true"></i>
               </button>
@@ -423,7 +445,7 @@ function mount(){
               )}
             </div>
             {session.loggedIn ? (
-              <div className="relative">
+              <div className="relative" ref={profileRef}>
                 <button onClick={()=>setOpenDropdown(o=>!o)} className="px-3 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-500 flex items-center gap-2" aria-haspopup="true" aria-expanded={openDropdown}>
                   <i className="fas fa-user-circle" aria-hidden="true"></i><span className="hidden sm:inline truncate max-w-[120px]">{session.user?.name || 'Profiel'}</span><i className="fas fa-chevron-down text-xs" aria-hidden="true"></i>
                 </button>
