@@ -1,11 +1,12 @@
-<?php 
+<?php
 require_once 'includes/init.php';
-require_once 'includes/header.php'; 
+require_once 'includes/header.php';
 ?>
 
 <main>
     <!-- Hero Section -->
     <section class="hero-section">
+        <canvas id="hero-canvas"></canvas>
         <div class="hero-overlay"></div>
         <div class="container">
             <div class="hero-content">
@@ -61,16 +62,16 @@ require_once 'includes/header.php';
             <div class="row text-center">
                 <?php
                 $pdo = getDbConnection();
-                
+
                 // Count teams
                 $teamCount = $pdo->query("SELECT COUNT(*) FROM teams")->fetchColumn();
-                
+
                 // Count matches
                 $matchCount = $pdo->query("SELECT COUNT(*) FROM matches")->fetchColumn();
-                
+
                 // Count players
                 $playerCount = $pdo->query("SELECT COUNT(*) FROM team_players")->fetchColumn();
-                
+
                 // Count finished matches
                 $finishedMatches = $pdo->query("SELECT COUNT(*) FROM matches WHERE status = 'finished'")->fetchColumn();
                 ?>
