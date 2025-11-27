@@ -1,8 +1,6 @@
-<footer class="border-t border-slate-200 dark:border-slate-800 py-8 mt-12">
-    <div class="mx-auto max-w-7xl px-4 text-center text-sm text-slate-500">
-        &copy; <?php echo date("Y"); ?> Football Tournament Project. All rights reserved.
-    </div>
-</footer>
+<footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 pt-12 pb-6 border-t border-slate-800">
+<!-- Footer mount point for React -->
+<div id="footer-root"></div>
 
 <script src="./assets/js/script.js"></script>
 
