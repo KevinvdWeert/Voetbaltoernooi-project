@@ -9,18 +9,18 @@ function redirect_with($status, $msg = null) {
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-    redirect_with('error', 'Ongeldige aanvraagmethode.');
+    redirect_with('error', 'Invalid request method.');
 }
 
 $token = $_POST['csrf_token'] ?? '';
 if (!verifyCsrfToken($token)) {
-    redirect_with('error', 'Ongeldige sessie. Vernieuw de pagina en probeer opnieuw.');
+    redirect_with('error', 'Invalid session. Please refresh the page and try again.');
 }
 
-// Basic rate limiting per session (30s)
+// Basic rate limiting per session (10s)
 $now = time();
-if (!empty($_SESSION['last_contact_time']) && ($now - (int)$_SESSION['last_contact_time']) < 30) {
-    redirect_with('error', 'Even wachten voordat je opnieuw verzendt.');
+if (!empty($_SESSION['last_contact_time']) && ($now - (int)$_SESSION['last_contact_time']) < 10) {
+    redirect_with('error', 'Please wait 10 seconds before sending another message.');
 }
 $_SESSION['last_contact_time'] = $now;
 
@@ -30,15 +30,15 @@ $subject = trim($_POST['subject'] ?? '');
 $message = trim($_POST['message'] ?? '');
 
 if ($name === '' || $email === '' || $subject === '' || $message === '') {
-    redirect_with('error', 'Alle velden zijn verplicht.');
+    redirect_with('error', 'All fields are required.');
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    redirect_with('error', 'Ongeldig e-mailadres.');
+    redirect_with('error', 'Invalid email address.');
 }
 
 if (mb_strlen($name) > 100 || mb_strlen($subject) > 150 || mb_strlen($message) > 5000) {
-    redirect_with('error', 'Invoer is te lang. Controleer velden.');
+    redirect_with('error', 'Input is too long. Please check your fields.');
 }
 
 // Optionally persist or send email. For now, log to php error log.

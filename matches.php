@@ -12,7 +12,7 @@ require_once 'includes/header.php';
   </noscript>
   <script>
     if (!location.hash || location.hash === '#/' ) {
-      location.hash = '#/wedstrijden';
+      location.hash = '#/matches';
     }
   </script>
 </main>

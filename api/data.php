@@ -95,10 +95,10 @@ try {
                 if ($match) {
                     jsonResponse(true, $match);
                 } else {
-                    jsonResponse(false, null, ['message' => 'Wedstrijd niet gevonden'], 404);
+                    jsonResponse(false, null, ['message' => 'Match not found'], 404);
                 }
             } else {
-                jsonResponse(false, null, ['message' => 'Ongeldig wedstrijd ID'], 400);
+                jsonResponse(false, null, ['message' => 'Invalid match ID'], 400);
             }
             break;
             
@@ -120,25 +120,40 @@ try {
             // Accept both 'q' and 'query'
             $queryRaw = $_GET['query'] ?? ($_GET['q'] ?? '');
             $query = trim($queryRaw);
+            
+            // Validate input length
             if (strlen($query) < 2) {
-                jsonResponse(false, null, ['message' => 'Zoekterm te kort'], 400);
+                jsonResponse(false, null, ['message' => 'Search term must be at least 2 characters'], 400);
             }
+            if (strlen($query) > 100) {
+                jsonResponse(false, null, ['message' => 'Search term too long (max 100 characters)'], 400);
+            }
+            
+            // Sanitize: remove special SQL characters that could be problematic
+            $query = preg_replace('/[%_\\\\]/', '', $query);
             $searchPattern = '%' . $query . '%';
+            
+            $limit = min((int)($_GET['limit'] ?? 10), 50); // Max 50 results
             $results = ['teams' => [], 'matches' => [], 'players' => []];
             
             // Search teams
-            $stmt = $pdo->prepare("SELECT id, name, 'team' as type FROM teams WHERE name LIKE ? LIMIT 10");
-            $stmt->execute([$searchPattern]);
+            $stmt = $pdo->prepare("SELECT id, name, 'team' as type FROM teams WHERE name LIKE ? LIMIT ?");
+            $stmt->bindValue(1, $searchPattern, PDO::PARAM_STR);
+            $stmt->bindValue(2, $limit, PDO::PARAM_INT);
+            $stmt->execute();
             $results['teams'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             // Search matches
-            $stmt = $pdo->prepare("SELECT m.id, CONCAT(t1.name, ' vs ', t2.name) as name, 'match' as type
+            $stmt = $pdo->prepare("SELECT m.id, m.match_date, t1.name as team_a_name, t2.name as team_b_name, 'match' as type
                                   FROM matches m
                                   JOIN teams t1 ON m.team_a_id = t1.id
                                   JOIN teams t2 ON m.team_b_id = t2.id
                                   WHERE t1.name LIKE ? OR t2.name LIKE ?
-                                  LIMIT 10");
-            $stmt->execute([$searchPattern, $searchPattern]);
+                                  LIMIT ?");
+            $stmt->bindValue(1, $searchPattern, PDO::PARAM_STR);
+            $stmt->bindValue(2, $searchPattern, PDO::PARAM_STR);
+            $stmt->bindValue(3, $limit, PDO::PARAM_INT);
+            $stmt->execute();
             $results['matches'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             // Search players
@@ -146,16 +161,18 @@ try {
                                   FROM team_players tp
                                   JOIN teams t ON tp.team_id = t.id
                                   WHERE tp.name LIKE ?
-                                  LIMIT 10");
-            $stmt->execute([$searchPattern]);
+                                  LIMIT ?");
+            $stmt->bindValue(1, $searchPattern, PDO::PARAM_STR);
+            $stmt->bindValue(2, $limit, PDO::PARAM_INT);
+            $stmt->execute();
             $results['players'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             jsonResponse(true, $results);
             break;
             
         default:
-            jsonResponse(false, null, ['message' => 'Ongeldige actie'], 400);
+            jsonResponse(false, null, ['message' => 'Invalid action'], 400);
     }
 } catch (Exception $e) {
-    jsonResponse(false, null, ['message' => 'Interne fout', 'detail' => APP_ENV==='local' ? $e->getMessage() : null], 500);
+    jsonResponse(false, null, ['message' => 'Internal error', 'detail' => APP_ENV==='local' ? $e->getMessage() : null], 500);
 }

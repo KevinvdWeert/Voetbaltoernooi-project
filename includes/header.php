@@ -24,7 +24,7 @@
     <meta name="twitter:description" content="Manage your football tournament with ease. Track teams, matches, and results in real time.">
 
     <title>Football Tournament Management System | Teams & Matches</title>
-    <link rel="icon" type="image/x-icon" href="./assets/img/favicon.ico">
+    <link id="site-favicon" rel="icon" type="image/x-icon" href="./assets/img/favicon_dark.ico">
     <?php
       $APP_DEV = isset($_SERVER['HTTP_HOST']) && str_contains($_SERVER['HTTP_HOST'], 'localhost');
       $hasManifest = file_exists(__DIR__ . '/../manifest.json');
@@ -65,5 +65,3 @@ $sessionPayload = [
     <!-- React header mount -->
     <div id="header-root"></div>
 </body>
-
-</html>
