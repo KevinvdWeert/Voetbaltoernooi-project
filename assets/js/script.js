@@ -9,6 +9,8 @@
 		const css = `
 			.ui-fade-in{opacity:0;transform:translateY(4px);transition:opacity .2s ease,transform .2s ease}
 			.ui-fade-in.show{opacity:1;transform:none}
+			/* ensure loader content doesn't shift during fade */
+			#app-loader { display: flex; align-items: center; justify-content: center; }
 		`;
 		const style = document.createElement('style');
 		style.setAttribute('data-ui-base','');
@@ -20,11 +22,15 @@
 	function createOverlay(){
 		const overlay = document.createElement('div');
 		overlay.id = 'app-loader';
-		overlay.className = 'fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-[9999] transition-opacity duration-300 opacity-0 pointer-events-none';
+		// fixed full-screen, center content, respect safe-area, start hidden
+		overlay.className = 'fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[9999] transition-opacity duration-300 opacity-0 pointer-events-none';
+		overlay.setAttribute('role','status');
+		overlay.setAttribute('aria-hidden','true');
+		overlay.setAttribute('aria-label','Loading');
 		overlay.innerHTML = `
-			<div class="text-center select-none">
-				<div class="mx-auto h-12 w-12 rounded-full border-4 border-white/20 border-t-white animate-spin"></div>
-				<div id="app-loader-text" class="mt-4 text-white text-sm font-medium">Loading…</div>
+			<div class="flex flex-col items-center justify-center gap-3 p-4 sm:p-0 text-center select-none">
+				<div class="h-12 w-12 rounded-full border-4 border-white/20 border-t-white animate-spin" aria-hidden="true"></div>
+				<div id="app-loader-text" class="mt-2 text-white text-sm font-medium">Loading…</div>
 			</div>
 		`;
 		document.body.appendChild(overlay);
@@ -69,11 +75,14 @@
 			if (!this._overlay) this._overlay = createOverlay();
 			const t = this._overlay.querySelector('#app-loader-text');
 			if (t && text) t.textContent = text;
+			// expose to assistive tech when visible
+			this._overlay.setAttribute('aria-hidden','false');
 			this._overlay.classList.remove('opacity-0','pointer-events-none');
 		},
 		hideLoader(){
 			if (!this._overlay) return;
 			this._overlay.classList.add('opacity-0');
+			this._overlay.setAttribute('aria-hidden','true');
 			// Avoid blocking clicks while faded
 			clearTimeout(this._hideTimer);
 			this._hideTimer = setTimeout(()=>{

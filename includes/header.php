@@ -14,11 +14,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Football Tournament">
     <meta name="format-detection" content="telephone=no">
-
     <meta property="og:type" content="website">
     <meta property="og:title" content="Football Tournament Management System">
     <meta property="og:description" content="Manage your football tournament with ease. Track teams, matches, and results in real time.">
-
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Football Tournament Management System">
     <meta name="twitter:description" content="Manage your football tournament with ease. Track teams, matches, and results in real time.">

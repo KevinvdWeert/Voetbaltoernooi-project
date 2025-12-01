@@ -1,4 +1,3 @@
-<footer class="bg-slate-900 dark:bg-slate-950 text-slate-300 pt-12 pb-6 border-t border-slate-800">
 <!-- Footer mount point for React -->
 <div id="footer-root"></div>
 
